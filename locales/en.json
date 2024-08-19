@@ -1,0 +1,18 @@
+{
+    "product_query": "Product Query",
+    "sell": "Sell",
+    "settings": "Settings",
+    "renew_prices": "Renew Prices",
+    "add_product": "Add Product",
+    "general_report": "General Report",
+    "toggle_theme": "Toggle Theme",
+    "go_back": "Go Back",
+    "scan_or_enter_barcode": "Scan or Enter Barcode:",
+    "product_name": "Product Name:",
+    "price": "Price:",
+    "details": "Details:",
+    "amount": "Amount:",
+    "success": "Product information added to the database.",
+    "input_error": "Please enter a valid {field}."
+  }
+  

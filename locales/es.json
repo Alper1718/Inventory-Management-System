@@ -1,0 +1,17 @@
+{
+  "product_query": "Consulta de Producto",
+  "sell": "Vender",
+  "settings": "Configuración",
+  "renew_prices": "Actualizar Precios",
+  "add_product": "Agregar Producto",
+  "general_report": "Informe General",
+  "toggle_theme": "Cambiar Tema",
+  "go_back": "Regresar",
+  "scan_or_enter_barcode": "Escanear o Ingresar Código de Barras:",
+  "product_name": "Nombre del Producto:",
+  "price": "Precio:",
+  "details": "Detalles:",
+  "amount": "Cantidad:",
+  "success": "La información del producto se agregó a la base de datos.",
+  "input_error": "Por favor ingrese un {field} válido."
+}
