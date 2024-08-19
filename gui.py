@@ -1,14 +1,27 @@
 import tkinter as tk
 from tkinter import messagebox, PhotoImage
 from database import init_db, add_barcode_info, get_barcode_info
-from config import THEME_FILE
+from config import THEME_FILE, LAST_LANGUAGE, DATABASE_PATH
 import os
 import json
+import sqlite3
 
 current_theme = "light"
 current_language = "en"
 button_images = {}
 translations = {}
+
+def load_language():
+    if os.path.exists(LAST_LANGUAGE):
+        with open(LAST_LANGUAGE, "r") as file:
+            return file.read().strip()
+    return "en"
+
+def save_language(lang):
+    with open(LAST_LANGUAGE, "w") as file:
+        file.write(lang)
+
+
 
 def load_translations(language_code):
     global translations
@@ -122,9 +135,81 @@ def open_product_query():
 
 def open_sell():
     clear_window()
-    tk.Label(root, text=translate("sell_functionality")).pack(pady=10)
+
+    products_sold = []
+    total_price = 0.0
+
+    def add_product_to_sell():
+        nonlocal total_price
+
+        barcode = barcode_entry.get().strip()
+        if not barcode:
+            messagebox.showwarning(translate("input_error"), translate("please_scan_or_enter_barcode"))
+            return
+        
+        info = get_barcode_info(barcode)
+        barcode_entry.delete(0, tk.END)
+
+        if info:
+            name, price, details, amount = info
+            
+            product_label = tk.Label(sell_frame, text=f"{translate('product_name')}: {name}\n"
+                                                      f"Barcode: {barcode}\n"
+                                                      f"{translate('details')}: {details}\n"
+                                                      f"{translate('price')}: {price}",
+                                                      justify="left", anchor="w")
+            product_label.pack(anchor="w", padx=10, pady=5)
+
+            total_price += price
+            total_price_label.config(text=f"{translate('total_price')}: {total_price:.2f}")
+            
+            products_sold.append((barcode, amount))
+        else:
+            messagebox.showwarning(translate("product_not_found"), translate("product_not_found"))
+
+    def finalize_sale():
+        nonlocal total_price
+
+        for barcode, amount_sold in products_sold:
+            current_info = get_barcode_info(barcode)
+            if current_info:
+                name, price, details, amount = current_info
+                new_amount = amount - 1
+                if new_amount >= 0:
+                    conn = sqlite3.connect(DATABASE_PATH)
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE barcodes SET amount=? WHERE barcode=?", (new_amount, barcode))
+                    conn.commit()
+                    conn.close()
+
+        clear_window()
+        products_sold.clear()
+        total_price = 0.0
+        go_back_to_main_menu()
+
+    tk.Label(root, text=translate("scan_or_enter_barcode")).pack(pady=10)
+
+    global barcode_entry
+    barcode_entry = tk.Entry(root, width=30)
+    barcode_entry.pack(pady=5)
+
+    submit_button = tk.Button(root, text=translate("submit"), command=add_product_to_sell)
+    submit_button.pack(pady=10)
+
+    global sell_frame
+    sell_frame = tk.Frame(root)
+    sell_frame.pack(pady=10)
+
+    global total_price_label
+    total_price_label = tk.Label(root, text=f"{translate('total_price')}: 0.00")
+    total_price_label.pack(pady=10)
+
+    finish_button = tk.Button(root, text=translate("finish_sale"), command=finalize_sale)
+    finish_button.pack(pady=20)
+
     add_go_back_button()
     apply_theme(current_theme)
+
 
 def open_settings():
     clear_window()
@@ -135,6 +220,7 @@ def open_settings():
         save_theme(new_theme)
     
     def change_language(language_code):
+        save_language(language_code)
         global current_language
         load_translations(language_code)
         current_language = language_code
@@ -260,7 +346,7 @@ def create_gui():
     root.title("Inventory Management System")
     root.attributes('-fullscreen', True)
 
-    load_translations(current_language)
+    load_translations(load_language())
     create_main_menu()
     
     apply_theme(load_theme())
