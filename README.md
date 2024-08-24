@@ -39,7 +39,7 @@ This repository provides an Inventory Management System built with Python using 
 - **Product Query**: Search for a product by scanning or entering its barcode.
 - **Sell**: Functionality for selling products (to be implemented).
 - **Settings**: Manage application settings including theme (light/dark) and language preferences.
-- **Renew Prices**: Functionality for updating product prices (to be implemented).
+- **Renew Prices**: Functionality for updating product prices.
 - **Add Product**: Add new products to the inventory.
 - **General Report**: View general reports (e.g., employee sales data) (to be implemented).
 - **More To Be Implemented**
@@ -61,10 +61,14 @@ This repository provides an Inventory Management System built with Python using 
    - Toggle between light and dark themes.
    - Change language preferences (currently supports English, Spanish, German, Turkish).
 
-4. **Add Product**: 
-   - Fill in the product information including barcode, name, price, details, and amount to add them to the database.
+4. **Renew Prices**:
+   - Renew a specific product's price.
+   - Renew all prices based on a percentage.
 
-5. **General Report**: 
+6. **Add Product**: 
+   - Fill in the product information including barcode, name, price, details, and amount to add them to the database.
+   
+7. **General Report**: 
    - Access general reports from the main menu.
 
 ## Notes
