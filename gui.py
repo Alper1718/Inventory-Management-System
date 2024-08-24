@@ -239,11 +239,96 @@ def open_settings():
     add_go_back_button()
     apply_theme(current_theme)
 
-def open_renew_prices():
+def update_price_for_barcode():
+    def update_price():
+        barcode = barcode_entry.get().strip()
+        try:
+            new_price = float(new_price_entry.get())
+        except ValueError:
+            messagebox.showwarning(translate("input_error"), translate("please_enter_valid_price"))
+            return
+        
+        info = get_barcode_info(barcode)
+        if not info:
+            messagebox.showwarning(translate("product_not_found"), translate("product_not_found"))
+            return
+        
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+        cursor.execute("UPDATE barcodes SET price=? WHERE barcode=?", (new_price, barcode))
+        conn.commit()
+        conn.close()
+
+        messagebox.showinfo(translate("success"), translate("price_updated_successfully"))
+        clear_window()
+        open_renew_prices()
+    
     clear_window()
-    tk.Label(root, text=translate("renew_prices_functionality")).pack(pady=10)
+    tk.Label(root, text=translate("enter_barcode_to_update_price")).pack(pady=10)
+
+    global barcode_entry, new_price_entry
+
+    barcode_entry = tk.Entry(root, width=30)
+    barcode_entry.pack(pady=5)
+
+    tk.Label(root, text=translate("enter_new_price")).pack(pady=10)
+
+    new_price_entry = tk.Entry(root, width=30)
+    new_price_entry.pack(pady=5)
+
+    update_button = tk.Button(root, text=translate("update_price"), command=update_price)
+    update_button.pack(pady=20)
+
     add_go_back_button()
     apply_theme(current_theme)
+
+def update_all_prices_by_percentage():
+    def apply_percentage_update():
+        try:
+            percentage = float(percentage_entry.get())
+        except ValueError:
+            messagebox.showwarning(translate("input_error"), translate("please_enter_valid_percentage"))
+            return
+        
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+        cursor.execute("UPDATE barcodes SET price = price * (1 + ? / 100)", (percentage,))
+        conn.commit()
+        conn.close()
+
+        messagebox.showinfo(translate("success"), translate("prices_updated_successfully"))
+        clear_window()
+        open_renew_prices()
+
+    clear_window()
+    tk.Label(root, text=translate("enter_percentage_to_update_prices")).pack(pady=10)
+
+    global percentage_entry
+
+    percentage_entry = tk.Entry(root, width=30)
+    percentage_entry.pack(pady=5)
+
+    update_button = tk.Button(root, text=translate("update_prices"), command=apply_percentage_update)
+    update_button.pack(pady=20)
+
+    add_go_back_button()
+    apply_theme(current_theme)
+
+
+def open_renew_prices():
+    clear_window()
+    tk.Label(root, text=translate("renew_prices")).pack(pady=10)
+
+    search_barcode_button = tk.Button(root, text=translate("update_specific_barcode_price"), command=update_price_for_barcode)
+    search_barcode_button.pack(pady=10)
+
+    update_all_button = tk.Button(root, text=translate("update_all_prices_by_percentage"), command=update_all_prices_by_percentage)
+    update_all_button.pack(pady=10)
+
+    add_go_back_button()
+    apply_theme(current_theme)
+
+
 
 def open_add_product():
     clear_window()
