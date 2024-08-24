@@ -22,5 +22,14 @@
     "settings": "Ayarlar",
     "renew_prices": "Fiyatları Yenile",
     "add_product": "Ürün Ekle",
-    "general_report": "Genel Rapor"
+    "general_report": "Genel Rapor",
+    "enter_barcode_to_update_price": "Fiyatı güncellenecek barkodu okutun veya girin",
+    "enter_new_price": "Yeni fiyatı girin",
+    "update_price": "Fiyatı güncelle",
+    "enter_percentage_to_update_prices": "Yüzde kaç zam yapılacağını girin",
+    "update_prices": "Fiyatları güncelle",
+    "prices_updated_successfully": "Fiyatlar başarıyla güncellendi",
+    "price_updated_successfully": "Fiyat başarıyla güncellendi",
+    "update_specific_barcode_price": "Tek bir fiyatı güncelle",
+    "update_all_prices_by_percentage": "Tüm fiyatları yüzdeliğe göre güncelle"
 }
