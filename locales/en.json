@@ -22,5 +22,14 @@
   "settings": "Settings",
   "renew_prices": "Renew Prices",
   "add_product": "Add Product",
-  "general_report": "General Report"
+  "general_report": "General Report",
+  "enter_barcode_to_update_price": "Scan or enter barcode to update price",
+  "enter_new_price": "Enter new price",
+  "update_price": "Update price",
+  "enter_percentage_to_update_prices": "Enter percentage to update prices",
+  "update_prices": "Update prices",
+  "prices_updated_successfully": "Prices updated successfully",
+  "price_updated_successfully": "Price updated successfully",
+  "update_specific_barcode_price": "Update a specific barcode price",
+  "update_all_prices_by_percentage": "Update all prices by percentage"
 }
